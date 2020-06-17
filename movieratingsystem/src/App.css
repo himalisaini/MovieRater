@@ -1,0 +1,63 @@
+.App {
+  min-height: 100vh;
+  background-color: #1d1b1b;
+  padding: 20px;
+  color: white;
+
+}
+
+.App-header{
+  text-align: center;
+  font-size: calc(10px + 2vmin);
+}
+
+.layout{
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  grid-gap: 40px;
+}
+
+.create-project{
+  margin: 10px;
+}
+
+.create-project:hover{
+  cursor: pointer;
+}
+
+.golden{
+  color: gold;
+}
+
+
+.rate-container{
+  border-top: 2px solid white;
+  margin: 15px;
+}
+
+.rate-container  .fa-star{
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.movie-item {
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+}
+.movie-item:hover{
+  background-color: #404040;
+}
+
+.movie-item svg{
+  font-size: 1.2rem;
+  margin: 16px 5px;
+}
+.movie-item svg:hover{
+  color:#ec4d37;
+}
+
+.movie-form-data {
+  text-align: center;
+  font-size: 1.5rem;
+}

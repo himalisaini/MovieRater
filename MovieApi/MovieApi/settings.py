@@ -76,7 +76,9 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'MovieApi.wsgi.application'
 
-
+CORS_ORIGIN_WHITELIST = [
+"http://localhost:3000",
+]
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
