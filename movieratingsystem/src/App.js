@@ -3,12 +3,19 @@ import './App.css';
 import MovieList from './Components/movie_list';
 import MovieDetails from './Components/movie_details';
 import MovieForm from './Components/movie-form';
+import {useCookies } from 'react-cookie';
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
+import { faFilm } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+
 
 function App() {
 
   const [movies, setMovies] = useState([]);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [editedMovie, setEditedMovie] = useState(null);
+  const [token , setToken , deleteToken ] = useCookies(['mr-token']);
 
 
   useEffect(()=>{
@@ -16,7 +23,7 @@ function App() {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Token 7cb7b1f367fc71d75cb1b88b0d392985f4059440'
+      'Authorization': `Token  ${token['mr-token']}`
     }
     
     })
@@ -25,6 +32,10 @@ function App() {
     .catch( error => console.log(error))
 
   }, [])
+
+  useEffect ( () => {
+    if(!token['mr-token']) window.location.href = '/';
+} , [token])
 
  
   const loadMovie = movie => {
@@ -36,6 +47,12 @@ function App() {
     setEditedMovie(movie);
     setSelectedMovie(null);
   }
+
+  const deleteClicked = movie => {
+    const newMovies = movies.filter ( mov => mov.id !== movie.id);
+    setMovies(newMovies);
+  }
+
   const updatedMovie = movie => {
     const newMovies = movies.map( mov => {
       if (mov.id === movie.id) {
@@ -57,15 +74,23 @@ function App() {
     setMovies(newMovies);
   }
 
+const logoutUser = () => {
+  deleteToken(['mr-token']);
+}
+
 
   return (
     <div className="App">
       <header className="App-header">
-        <h1> Movie Rating Sysytem </h1>
+        
+        <h2>
+        <FontAwesomeIcon icon={ faFilm } /> Movie Rating Sysytem </h2>
+        <FontAwesomeIcon icon={ faSignOutAlt } onClick={logoutUser} />
+
       </header>
       <div className="layout">
           <div>
-          <MovieList movies={movies} movieClicked = {loadMovie} editClicked = {editClicked} />
+          <MovieList movies={movies} movieClicked = {loadMovie} editClicked = {editClicked} deleteClicked = {deleteClicked}/>
           <button onClick={ newMovie }> Add Movie </button>
           </div>
           <MovieDetails movie = {selectedMovie} updateMovie={loadMovie}/>

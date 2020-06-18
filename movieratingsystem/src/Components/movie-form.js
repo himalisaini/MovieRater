@@ -1,28 +1,32 @@
 import React, { useState , useEffect } from 'react';
 import API from '../api-service';
+import {useCookies } from 'react-cookie';
+
 
 function MovieForm(props){
 
     const mov = props.movie;
-    const [ title , setTitle ] = useState ();
-    const [ genre , setGenre ] = useState ();
-    const [ description , setDescription ] = useState ();
+    const [ title , setTitle ] = useState ('');
+    const [ genre , setGenre ] = useState ('');
+    const [ description , setDescription ] = useState ('');
+    const [token] = useCookies(['mr-token']);
+
 
     useEffect ( () => {
 
         setTitle(mov.title)
-        setGenre(mov.genre)
+        setGenre(mov.genre) 
         setDescription(mov.description)
     } , [mov])
 
     const updateClicked = () =>{
-        API.updateMovie(mov.id, {title,genre,description})
+        API.updateMovie(mov.id, {title,genre,description}, token['mr-token'])
         .then( resp=> props.updatedMovie(resp))
         .catch( error => console.log(error))
     }
 
     const createClicked = () =>{
-        API.createMovie({title,genre,description})
+        API.createMovie({title,genre,description},token['mr-token'])
         .then( resp=> props.addMovie(resp))
         .catch( error => console.log(error))
     }
@@ -45,7 +49,7 @@ function MovieForm(props){
         <textarea type="text" rows="6" cols="40" placeholder={description} value={description} id="description" onChange={ evt=> setDescription(evt.target.value)} />
             <br/>
 
-            { mov. id ? 
+            { mov.id ? 
        <button onClick={updateClicked}>Update</button> :
        <button onClick={createClicked}>Add</button>
             }
